@@ -79,11 +79,9 @@ jobs:
           IMAGE_URI="${{ env.ECR_REGISTRY }}/eks-lab/${{ matrix.service }}"
           
           docker build -t ${IMAGE_URI}:${IMAGE_TAG} \
-                       -t ${IMAGE_URI}:latest \
                        microservices/${{ matrix.service }}/
           
           docker push ${IMAGE_URI}:${IMAGE_TAG}
-          docker push ${IMAGE_URI}:latest
 
   deploy:
     needs: [detect-changes, build-and-push]
