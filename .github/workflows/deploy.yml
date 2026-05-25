@@ -11,10 +11,15 @@ on:
     paths:
       - 'microservices/**'
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AWS_REGION: ap-southeast-1
   ECR_REGISTRY: 468018987855.dkr.ecr.ap-southeast-1.amazonaws.com
   EKS_CLUSTER: eks-lab
+  IAM_ROLE: arn:aws:iam::468018987855:role/eks-lab-github-actions
 
 jobs:
   detect-changes:
@@ -48,23 +53,19 @@ jobs:
         include:
           - service: backend-service
             changed: ${{ needs.detect-changes.outputs.backend }}
-            port: 3000
           - service: api-gateway
             changed: ${{ needs.detect-changes.outputs.gateway }}
-            port: 3001
           - service: frontend
             changed: ${{ needs.detect-changes.outputs.frontend }}
-            port: 3002
     steps:
       - uses: actions/checkout@v4
         if: matrix.changed == 'true'
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         if: matrix.changed == 'true'
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ env.IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR
@@ -91,11 +92,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ env.IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Update kubeconfig
