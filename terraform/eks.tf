@@ -98,7 +98,7 @@ module "eks" {
   access_entries = {
     admin = {
       kubernetes_groups = []
-      principal_arn     = "arn:aws:iam::468018987855:role/agent-ec2-transcribe"
+      principal_arn     = "arn:aws:iam::<ACCOUNT_ID>:role/agent-ec2-transcribe"
       policy_associations = {
         admin = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"

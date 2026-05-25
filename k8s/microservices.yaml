@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: backend-service
-          image: 468018987855.dkr.ecr.ap-southeast-1.amazonaws.com/eks-lab/backend-service:v1.0.0
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.ap-southeast-1.amazonaws.com/eks-lab/backend-service:v1.0.0
           ports:
             - containerPort: 3000
           env:
@@ -97,7 +97,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: 468018987855.dkr.ecr.ap-southeast-1.amazonaws.com/eks-lab/api-gateway:v1.0.0
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.ap-southeast-1.amazonaws.com/eks-lab/api-gateway:v1.0.0
           ports:
             - containerPort: 3001
           env:
@@ -167,7 +167,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 468018987855.dkr.ecr.ap-southeast-1.amazonaws.com/eks-lab/frontend:v1.0.0
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.ap-southeast-1.amazonaws.com/eks-lab/frontend:v1.0.0
           ports:
             - containerPort: 3002
           env:
