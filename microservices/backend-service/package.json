@@ -1,6 +1,6 @@
 {
   "name": "backend-service",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "EKS Lab - Backend Service",
   "main": "index.js",
   "scripts": {
