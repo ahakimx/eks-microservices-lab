@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SRE Agent Architecture</title>
+<style>body{margin:0;padding:20px;background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#b85450"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0088CC"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#FF9900"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#82b366"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="620" fill="#fafafa" rx="8"/>
+
+  <!-- ===== LEFT COLUMN: User + Telegram ===== -->
+  <!-- User icon -->
+  <circle cx="60" cy="290" r="22" fill="#232F3E"/>
+  <circle cx="60" cy="270" r="10" fill="#fff"/>
+  <path d="M40 300 Q60 320 80 300" fill="none" stroke="#fff" stroke-width="2"/>
+  <text x="60" y="330" text-anchor="middle" font-size="11" font-weight="bold" fill="#232F3E">SRE Engineer</text>
+
+  <!-- Telegram -->
+  <rect x="120" y="270" width="110" height="42" rx="6" fill="#0088CC"/>
+  <text x="175" y="296" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Telegram</text>
+
+  <!-- User -> Telegram -->
+  <line x1="82" y1="290" x2="118" y2="290" stroke="#0088CC" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="100" y="283" text-anchor="middle" font-size="8" fill="#0088CC">ChatOps</text>
+
+  <!-- ===== SRE AGENT BOX ===== -->
+  <rect x="280" y="180" width="210" height="250" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="2"/>
+  <text x="385" y="205" text-anchor="middle" font-size="13" font-weight="bold" fill="#b85450">SRE Agent</text>
+  <text x="385" y="222" text-anchor="middle" font-size="10" fill="#666">(Python on EC2 / OpenClaw)</text>
+
+  <!-- Agent features -->
+  <rect x="295" y="235" width="180" height="32" rx="4" fill="#fff" stroke="#b85450"/>
+  <text x="385" y="255" text-anchor="middle" font-size="10" fill="#333">🔍 Health Scan (5 min)</text>
+
+  <rect x="295" y="275" width="180" height="32" rx="4" fill="#fff" stroke="#b85450"/>
+  <text x="385" y="295" text-anchor="middle" font-size="10" fill="#333">🔧 Auto-Remediation</text>
+
+  <rect x="295" y="315" width="180" height="32" rx="4" fill="#fff" stroke="#b85450"/>
+  <text x="385" y="335" text-anchor="middle" font-size="10" fill="#333">💬 ChatOps Commands</text>
+
+  <rect x="295" y="355" width="180" height="32" rx="4" fill="#fff" stroke="#b85450"/>
+  <text x="385" y="375" text-anchor="middle" font-size="10" fill="#333">📋 Incident Reports</text>
+
+  <!-- Telegram -> SRE Agent -->
+  <line x1="232" y1="291" x2="278" y2="291" stroke="#0088CC" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="255" y="284" text-anchor="middle" font-size="8" fill="#0088CC">cmds</text>
+
+  <!-- SRE Agent -> Telegram (alerts back) -->
+  <line x1="278" y1="305" x2="232" y2="305" stroke="#0088CC" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-blue)"/>
+  <text x="255" y="318" text-anchor="middle" font-size="8" fill="#0088CC">alerts</text>
+
+  <!-- ===== EKS CLUSTER BOX ===== -->
+  <rect x="540" y="40" width="440" height="480" rx="8" fill="#fff8e1" stroke="#FF9900" stroke-width="2"/>
+  <text x="560" y="65" font-size="13" font-weight="bold" fill="#FF9900">EKS Cluster (v1.34)</text>
+  <text x="560" y="82" font-size="10" fill="#666">ap-southeast-1 | VPC 10.0.0.0/16</text>
+
+  <!-- Namespace: microservices -->
+  <rect x="560" y="95" width="400" height="130" rx="6" fill="#e3f2fd" stroke="#6c8ebf" stroke-width="1.5"/>
+  <text x="575" y="113" font-size="10" font-weight="bold" fill="#6c8ebf">namespace: microservices</text>
+
+  <!-- Services -->
+  <rect x="580" y="125" width="100" height="38" rx="5" fill="#ED7100"/>
+  <text x="630" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">frontend</text>
+
+  <rect x="710" y="125" width="100" height="38" rx="5" fill="#ED7100"/>
+  <text x="760" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">api-gateway</text>
+
+  <rect x="840" y="125" width="110" height="38" rx="5" fill="#ED7100"/>
+  <text x="895" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">backend-svc</text>
+
+  <!-- Service arrows -->
+  <line x1="682" y1="144" x2="708" y2="144" stroke="#FF9900" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <line x1="812" y1="144" x2="838" y2="144" stroke="#FF9900" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- Network Policy label -->
+  <text x="760" y="185" text-anchor="middle" font-size="9" fill="#6c8ebf">Network Policies (pod-to-pod restricted)</text>
+
+  <!-- Namespace: monitoring -->
+  <rect x="560" y="240" width="400" height="100" rx="6" fill="#e8f5e9" stroke="#82b366" stroke-width="1.5"/>
+  <text x="575" y="258" font-size="10" font-weight="bold" fill="#82b366">namespace: monitoring</text>
+
+  <rect x="580" y="270" width="100" height="35" rx="5" fill="#E7157B"/>
+  <text x="630" y="292" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Prometheus</text>
+
+  <rect x="700" y="270" width="100" height="35" rx="5" fill="#E7157B"/>
+  <text x="750" y="292" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Alertmanager</text>
+
+  <rect x="820" y="270" width="100" height="35" rx="5" fill="#E7157B"/>
+  <text x="870" y="292" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Grafana</text>
+
+  <!-- Prometheus scrape arrow -->
+  <line x1="630" y1="268" x2="630" y2="227" stroke="#82b366" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-green)"/>
+  <text x="645" y="250" font-size="8" fill="#82b366">scrape</text>
+
+  <!-- Worker Nodes -->
+  <rect x="560" y="360" width="400" height="35" rx="5" fill="#f5f5f5" stroke="#999"/>
+  <text x="760" y="382" text-anchor="middle" font-size="10" fill="#555">Worker Nodes: 2x t3.medium Spot (IMDSv2 enforced)</text>
+
+  <!-- AWS Services row -->
+  <rect x="560" y="415" width="90" height="40" rx="5" fill="#ED7100"/>
+  <text x="605" y="433" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ECR</text>
+  <text x="605" y="447" text-anchor="middle" font-size="8" fill="#fff">(Immutable)</text>
+
+  <rect x="665" y="415" width="90" height="40" rx="5" fill="#DD344C"/>
+  <text x="710" y="433" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">IAM</text>
+  <text x="710" y="447" text-anchor="middle" font-size="8" fill="#fff">(OIDC + IRSA)</text>
+
+  <rect x="770" y="415" width="90" height="40" rx="5" fill="#E7157B"/>
+  <text x="815" y="433" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CloudWatch</text>
+  <text x="815" y="447" text-anchor="middle" font-size="8" fill="#fff">Logs</text>
+
+  <rect x="875" y="415" width="90" height="40" rx="5" fill="#8C4FFF"/>
+  <text x="920" y="433" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ALB</text>
+  <text x="920" y="447" text-anchor="middle" font-size="8" fill="#fff">(Public)</text>
+
+  <!-- ===== SRE Agent -> EKS (kubectl) ===== -->
+  <line x1="492" y1="270" x2="538" y2="270" stroke="#b85450" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrow-red)"/>
+  <text x="515" y="262" text-anchor="middle" font-size="10" font-weight="bold" fill="#b85450">kubectl</text>
+
+  <!-- ===== GitHub Actions ===== -->
+  <rect x="1040" y="95" width="140" height="42" rx="6" fill="#1B1F23"/>
+  <text x="1110" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">GitHub Actions</text>
+  <text x="1110" y="130" text-anchor="middle" font-size="9" fill="#ccc">(OIDC, no secrets)</text>
+
+  <!-- GitHub -> EKS (deploy) -->
+  <path d="M1040 116 L990 116" fill="none" stroke="#1B1F23" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1015" y="110" text-anchor="middle" font-size="8" fill="#666">deploy</text>
+
+  <!-- GitHub -> ECR -->
+  <path d="M1040 130 Q1000 130 1000 500 Q1000 500 660 500 L660 457" fill="none" stroke="#ED7100" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-orange)"/>
+  <text x="1010" y="400" font-size="8" fill="#ED7100">push image</text>
+
+  <!-- GitHub -> IAM (OIDC) -->
+  <path d="M1080 139 Q1080 435 710 435 L710 457" fill="none" stroke="#DD344C" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="1060" y="300" font-size="8" fill="#DD344C">OIDC</text>
+
+  <!-- ALB -> Frontend -->
+  <path d="M920 415 L920 200 Q920 195 915 195 L680 195 L680 165" fill="none" stroke="#8C4FFF" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="930" y="300" font-size="8" fill="#8C4FFF">HTTP traffic</text>
+
+  <!-- ===== LEGEND ===== -->
+  <rect x="20" y="440" width="220" height="160" rx="6" fill="#fff" stroke="#ddd"/>
+  <text x="35" y="460" font-size="11" font-weight="bold" fill="#333">Legend</text>
+
+  <line x1="35" y1="478" x2="65" y2="478" stroke="#FF9900" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="75" y="482" font-size="9" fill="#333">Service traffic flow</text>
+
+  <line x1="35" y1="498" x2="65" y2="498" stroke="#b85450" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="75" y="502" font-size="9" fill="#333">kubectl (SRE Agent → EKS)</text>
+
+  <line x1="35" y1="518" x2="65" y2="518" stroke="#0088CC" stroke-width="2"/>
+  <text x="75" y="522" font-size="9" fill="#333">ChatOps (User ↔ Agent)</text>
+
+  <line x1="35" y1="538" x2="65" y2="538" stroke="#82b366" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="75" y="542" font-size="9" fill="#333">Metrics scraping</text>
+
+  <line x1="35" y1="558" x2="65" y2="558" stroke="#1B1F23" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="75" y="562" font-size="9" fill="#333">CI/CD (GitHub → AWS)</text>
+
+  <line x1="35" y1="578" x2="65" y2="578" stroke="#8C4FFF" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="75" y="582" font-size="9" fill="#333">Public HTTP traffic</text>
+
+  <!-- Title -->
+  <text x="600" y="600" text-anchor="middle" font-size="11" fill="#999">SRE Agent Architecture — EKS Microservices Lab | Abdul Hakim (@a_hakimx)</text>
+
+</svg>
+</body>
+</html>
