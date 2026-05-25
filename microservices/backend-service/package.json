@@ -1,0 +1,12 @@
+{
+  "name": "backend-service",
+  "version": "1.0.0",
+  "description": "EKS Lab - Backend Service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "4.21.2"
+  }
+}
